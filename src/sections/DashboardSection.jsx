@@ -41,7 +41,7 @@ export default function DashboardSection() {
   ];
 
   return (
-    <div className="h-full bg-[#f8f8f8] p-4 md:p-6 lg:p-8">
+    <div className="h-full bg-[#f8f8f8] p-4 md:p-5 lg:p-6">
       <div className="mx-auto space-y-6">
         {/* Header */}
         <DashboardHeader />

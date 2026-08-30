@@ -28,9 +28,9 @@ function Sidebar() {
   ];
 
   return (
-    <div className="px-8 py-4 w-full h-full flex flex-col justify-between gap-8 bg-black">
+    <div className="px-6 py-4 w-full h-full flex flex-col justify-between gap-8 bg-black">
       <div className="w-full flex flex-col gap-5 items-center">
-        <img className="w-[200px]" src="/logo.png" alt="Vuselo" />
+        <img className="w-[150px]" src="/logo.png" alt="Vuselo" />
         <div className="border border-gray-600 w-full" />
         {/* Pages */}
         <div className="w-full flex flex-col gap-4">
@@ -56,8 +56,8 @@ function Sidebar() {
         </div>
       </div>
       {/* bottom */}
-      <div className="w-full flex p-3 gap-5 items-center justify-between bg-froozen rounded-full">
-        <div className="flex gap-2 items-center">
+      <div className="w-full flex p-3 gap-5 items-center justify-between bg-froozen text-black rounded-full">
+        <div className="flex gap-2 items-center text-black">
           <img className="rounded-full h-12 w-12" src="/user.jpg" alt="" />
           <div>
             <p className="text-lg font-bold space-grotesk">Jhon Dee</p>
