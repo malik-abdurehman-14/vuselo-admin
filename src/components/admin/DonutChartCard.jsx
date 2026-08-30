@@ -2,44 +2,29 @@
 
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from "recharts";
 
-const data = [
-  {
-    name: "Vape Devices",
-    value: 53529,
-    percentage: 42,
-  },
-  {
-    name: "Nicotine Pouches",
-    value: 44608,
-    percentage: 35,
-  },
-  {
-    name: "Pods & Refills",
-    value: 29314,
-    percentage: 23,
-  },
-];
+export default function DonutChartCard({
+  title,
+  subtitle,
+  data,
+  total,
+  totalLabel = "Total",
+  valuePrefix = "£",
+  colors = ["#31cdd0", "#5bd9db", "#b7eff0"],
+}) {
+  const formatValue = (value) => {
+    return `${valuePrefix}${Number(value).toLocaleString()}`;
+  };
 
-const COLORS = ["#31cdd0", "#5bd9db", "#b7eff0"];
-
-function formatCurrency(value) {
-  return `£${value.toLocaleString()}`;
-}
-
-export default function RevenueCategoryChart() {
   return (
     <div className="rounded-[20px] bg-white p-5 shadow-[0_3px_18px_rgba(0,0,0,0.04)]">
       <div>
-        <h3 className="text-[15px] font-semibold text-[#111827]">
-          Revenue by Category
-        </h3>
+        <h3 className="text-[15px] font-semibold text-[#111827]">{title}</h3>
 
-        <p className="mt-1 text-xs text-[#737b88]">
-          Breakdown of revenue across product categories
-        </p>
+        <p className="mt-1 text-xs text-[#737b88]">{subtitle}</p>
       </div>
 
-      <div className="mt-4 grid grid-cols-1 items-center gap-4 md:grid-cols-[220px_1fr]">
+      <div className="mt-4 grid grid-cols-1 items-center gap-5 md:grid-cols-[220px_1fr]">
+        {/* Chart */}
         <div className="relative mx-auto h-[220px] w-[220px]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
@@ -49,27 +34,27 @@ export default function RevenueCategoryChart() {
                 nameKey="name"
                 innerRadius={65}
                 outerRadius={97}
-                paddingAngle={0}
                 stroke="none"
               >
-                {data.map((entry, index) => (
-                  <Cell key={entry.name} fill={COLORS[index]} />
+                {data.map((item, index) => (
+                  <Cell key={item.name} fill={colors[index % colors.length]} />
                 ))}
               </Pie>
 
-              <Tooltip formatter={(value) => formatCurrency(Number(value))} />
+              <Tooltip formatter={(value) => formatValue(value)} />
             </PieChart>
           </ResponsiveContainer>
 
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <span className="text-sm text-[#737b88]">Total</span>
+            <span className="text-sm text-[#737b88]">{totalLabel}</span>
 
             <strong className="mt-1 text-[20px] font-semibold text-[#111827]">
-              £127.4K
+              {total}
             </strong>
           </div>
         </div>
 
+        {/* Legend */}
         <div className="space-y-5">
           {data.map((item, index) => (
             <div
@@ -80,17 +65,18 @@ export default function RevenueCategoryChart() {
                 <span
                   className="h-2 w-2 shrink-0 rounded-full"
                   style={{
-                    backgroundColor: COLORS[index],
+                    backgroundColor: colors[index % colors.length],
                   }}
                 />
 
                 <span className="truncate text-xs text-[#737b88]">
-                  {item.name} ({item.percentage}%)
+                  {item.name}
+                  {item.percentage ? ` (${item.percentage}%)` : ""}
                 </span>
               </div>
 
               <span className="shrink-0 text-xs font-semibold text-[#27303b]">
-                {formatCurrency(item.value)}
+                {formatValue(item.value)}
               </span>
             </div>
           ))}

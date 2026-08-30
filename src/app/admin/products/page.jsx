@@ -1,7 +1,7 @@
-import React from "react";
+"use client";
 
-function page() {
-  return <div>Products</div>;
+import ProductsSection from "@/sections/ProductsSection";
+
+export default function ProductsPage() {
+  return <ProductsSection />;
 }
-
-export default page;

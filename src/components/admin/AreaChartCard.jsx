@@ -10,43 +10,43 @@ import {
   Tooltip,
 } from "recharts";
 
-const data = [
-  { month: "Jan", sales: 1480 },
-  { month: "Feb", sales: 1410 },
-  { month: "Mar", sales: 1730 },
-  { month: "Apr", sales: 1260 },
-  { month: "May", sales: 1680 },
-  { month: "Jun", sales: 1490 },
-];
-
-function CustomTooltip({ active, payload }) {
-  if (!active || !payload?.length) return null;
+function CustomTooltip({ active, payload, label, valuePrefix = "" }) {
+  if (!active || !payload?.length) {
+    return null;
+  }
 
   return (
     <div className="rounded-lg border border-[#eeeeee] bg-white px-3 py-2 shadow-lg">
-      <p className="text-xs text-[#737b88]">{payload[0].payload.month}</p>
+      <p className="text-xs text-[#737b88]">{label}</p>
 
       <p className="mt-1 text-sm font-semibold text-[#111827]">
-        {payload[0].value.toLocaleString()} sales
+        {valuePrefix}
+        {Number(payload[0].value).toLocaleString()}
       </p>
     </div>
   );
 }
 
-export default function MonthlySalesChart() {
+export default function AreaChartCard({
+  title,
+  subtitle,
+  data,
+  dataKey = "value",
+  xAxisKey = "label",
+  yDomain = [0, "auto"],
+  yTicks,
+  valuePrefix = "",
+  height = 260,
+}) {
   return (
     <div className="rounded-[20px] bg-white p-5 shadow-[0_3px_18px_rgba(0,0,0,0.04)]">
       <div>
-        <h3 className="text-[15px] font-semibold text-[#111827]">
-          Monthly Sales Volume
-        </h3>
+        <h3 className="text-[15px] font-semibold text-[#111827]">{title}</h3>
 
-        <p className="mt-1 text-xs text-[#737b88]">
-          Track product sales over time
-        </p>
+        <p className="mt-1 text-xs text-[#737b88]">{subtitle}</p>
       </div>
 
-      <div className="mt-5 h-[260px] w-full">
+      <div className="mt-5 w-full" style={{ height }}>
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart
             data={data}
@@ -58,7 +58,13 @@ export default function MonthlySalesChart() {
             }}
           >
             <defs>
-              <linearGradient id="salesGradient" x1="0" y1="0" x2="0" y2="1">
+              <linearGradient
+                id="areaChartGradient"
+                x1="0"
+                y1="0"
+                x2="0"
+                y2="1"
+              >
                 <stop offset="0%" stopColor="#2fd0d2" stopOpacity={0.28} />
 
                 <stop offset="100%" stopColor="#2fd0d2" stopOpacity={0.04} />
@@ -72,7 +78,7 @@ export default function MonthlySalesChart() {
             />
 
             <XAxis
-              dataKey="month"
+              dataKey={xAxisKey}
               axisLine={false}
               tickLine={false}
               tick={{
@@ -82,10 +88,10 @@ export default function MonthlySalesChart() {
             />
 
             <YAxis
+              domain={yDomain}
+              ticks={yTicks}
               axisLine={false}
               tickLine={false}
-              domain={[0, 2500]}
-              ticks={[0, 500, 1000, 1500, 2000, 2500]}
               tick={{
                 fill: "#737b88",
                 fontSize: 11,
@@ -93,7 +99,7 @@ export default function MonthlySalesChart() {
             />
 
             <Tooltip
-              content={<CustomTooltip />}
+              content={<CustomTooltip valuePrefix={valuePrefix} />}
               cursor={{
                 stroke: "#2fd0d2",
                 strokeDasharray: "4 4",
@@ -102,10 +108,10 @@ export default function MonthlySalesChart() {
 
             <Area
               type="monotone"
-              dataKey="sales"
+              dataKey={dataKey}
               stroke="#2fd0d2"
               strokeWidth={2}
-              fill="url(#salesGradient)"
+              fill="url(#areaChartGradient)"
               dot={false}
               activeDot={{
                 r: 5,
